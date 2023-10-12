@@ -24,7 +24,9 @@ if __name__ == "__main__":
     print(len(texts))
     # Embedding the vectors using OpenAI and then passing it into the Pinecone to form vectors
     embeddings = OpenAIEmbeddings(openai_api_key=os.getenv("OPENAI_API_KEY"))
-    docsearch = Pinecone.from_documents(texts, embeddings, index_name="medium-blogs-eembedding-index")
+    docsearch = Pinecone.from_documents(
+        texts, embeddings, index_name="medium-blogs-eembedding-index"
+    )
 
     qa = RetrievalQA.from_chain_type(
         llm=OpenAI(), chain_type="stuff", retriever=docsearch.as_retriever()
@@ -32,4 +34,3 @@ if __name__ == "__main__":
     query = "What is a vector DB? Give me a 15 word answer for a beginner."
     result = qa({"query": query})
     print(result)
-    
